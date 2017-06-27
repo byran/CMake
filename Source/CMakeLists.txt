@@ -235,6 +235,8 @@ set(SRCS
   cmExtraEclipseCDT4Generator.h
   cmExtraKateGenerator.cxx
   cmExtraKateGenerator.h
+  cmExtraMPLABXGenerator.cxx
+  cmExtraMPLABXGenerator.h
   cmExtraSublimeTextGenerator.cxx
   cmExtraSublimeTextGenerator.h
   cmFileLock.cxx

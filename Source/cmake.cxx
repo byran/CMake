@@ -85,6 +85,7 @@
 #include "cmExtraCodeBlocksGenerator.h"
 #endif
 #include "cmExtraKateGenerator.h"
+#include "cmExtraMPLABXGenerator.h"
 #include "cmExtraSublimeTextGenerator.h"
 
 #ifdef CMAKE_USE_KDEVELOP
@@ -890,6 +891,7 @@ void cmake::AddDefaultExtraGenerators()
   this->ExtraGenerators.push_back(cmExtraCodeLiteGenerator::GetFactory());
   this->ExtraGenerators.push_back(cmExtraSublimeTextGenerator::GetFactory());
   this->ExtraGenerators.push_back(cmExtraKateGenerator::GetFactory());
+  this->ExtraGenerators.push_back(cmExtraMPLABXGenerator::GetFactory());
 
 #ifdef CMAKE_USE_ECLIPSE
   this->ExtraGenerators.push_back(cmExtraEclipseCDT4Generator::GetFactory());
