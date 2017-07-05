@@ -79,6 +79,9 @@
 #if defined(CMAKE_BUILD_WITH_CMAKE)
 #include "cmGlobalNinjaGenerator.h"
 #endif
+
+#include "cmGlobalMPLABXGenerator.h"
+
 #include "cmExtraCodeLiteGenerator.h"
 
 #if !defined(CMAKE_BOOT_MINGW)
@@ -1693,6 +1696,8 @@ void cmake::AddDefaultGenerators()
 #ifdef CMAKE_USE_XCODE
   this->Generators.push_back(cmGlobalXCodeGenerator::NewFactory());
 #endif
+
+  this->Generators.push_back(cmGlobalMPLABXGenerator::NewFactory());
 }
 
 bool cmake::ParseCacheEntry(const std::string& entry, std::string& var,

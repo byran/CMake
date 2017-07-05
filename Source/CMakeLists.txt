@@ -276,6 +276,8 @@ set(SRCS
   cmGlobalGenerator.cxx
   cmGlobalGenerator.h
   cmGlobalGeneratorFactory.h
+  cmGlobalMPLABXGenerator.cxx
+  cmGlobalMPLABXGenerator.h
   cmGlobalUnixMakefileGenerator3.cxx
   cmGlobalUnixMakefileGenerator3.h
   cmGraphAdjacencyList.h
