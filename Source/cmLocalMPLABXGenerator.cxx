@@ -65,6 +65,30 @@ namespace
     object.WriteToStream(fileStream);
     return true;
   }
+
+  void AddMPLABXToolConfigurationFromDefinitions(
+    cmGeneratorTarget* target,
+    cmLocalMPLABXConfigurationGenerator& configuration)
+  {
+    auto definitions = target->Makefile->GetDefinitions();
+    for(auto& definition : definitions)
+    {
+      if(cmSystemTools::StringStartsWith(definition.c_str(), "MPLABXTOOL"))
+      {
+        auto parts = cmSystemTools::SplitString(definition, ',');
+
+        if (parts.size() == 3)
+        {
+          configuration.toolsConfiguration[parts[1]][parts[2]] =
+            target->Makefile->GetRequiredDefinition(definition);
+        }
+        else
+        {
+          cmSystemTools::Error("Invalid MPLABXTOOL: ", definition.c_str());
+        }
+      }
+    }
+  }
 }
 
 extern const std::string makefileContents;
@@ -78,6 +102,8 @@ void cmLocalMPLABXGenerator::Generate()
     cmLocalMPLABXProjectGenerator project;
     cmLocalMPLABXConfigurationGenerator configuration;
     configuration.targetType = target->GetType();
+
+    AddMPLABXToolConfigurationFromDefinitions(target, configuration);
 
     configuration.sourceRoots.push_back(this->GetCurrentSourceDirectory());
 
