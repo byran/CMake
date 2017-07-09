@@ -32,12 +32,20 @@ public:
    */
   static bool SupportsPlatform() { return false; }
 
+  virtual bool SetGeneratorPlatform(std::string const& p,
+    cmMakefile* mf) CM_OVERRIDE;
+
+  virtual bool SetGeneratorToolset(std::string const& ts,
+    cmMakefile* mf) CM_OVERRIDE;
+
   virtual std::string GetName() const CM_OVERRIDE
   {
     return cmGlobalMPLABXGenerator::GetActualName();
   }
 
-//  virtual bool FindMakeProgram(cmMakefile* mf) CM_OVERRIDE;
+  virtual bool FindMakeProgram(cmMakefile* mf) CM_OVERRIDE;
+
+  virtual void Generate() CM_OVERRIDE;
 
   virtual void GenerateBuildCommand(
                             std::vector<std::string>& makeCommand,
