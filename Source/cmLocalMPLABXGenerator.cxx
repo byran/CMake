@@ -96,6 +96,9 @@ extern const std::string makefileContents;
 void cmLocalMPLABXGenerator::Generate()
 {
   std::vector<cmGeneratorTarget*> targets = this->GetGeneratorTargets();
+  auto projectTool =
+    this->Makefile->GetDefinition("MPLABX_PROJECT_MAKEFILES_GENERATOR");
+  auto fullProject = this->Makefile->GetDefinition("MPLABX_FULL_PROJECT");
 
   for(auto target : targets)
   {
@@ -169,6 +172,17 @@ void cmLocalMPLABXGenerator::Generate()
     }
 
     makefileFileStream << makefileContents;
+
+    if(fullProject && projectTool)
+    {
+      std::string command = std::string("\"") + projectTool + "\" \"" +
+        this->ConvertToFullPath(target->GetName() + ".X") + "\"";
+
+      if(!cmSystemTools::RunSingleCommand(command.c_str()))
+      {
+        cmSystemTools::Error("Project build failed: ", command.c_str());
+      }
+    }
   }
 }
 
