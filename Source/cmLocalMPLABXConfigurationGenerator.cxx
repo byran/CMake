@@ -337,7 +337,7 @@ void cmLocalMPLABXConfigurationGenerator::AddC32GlobalConfiguration()
   config["wpo-lto"] = "false";
 }
 
-void cmLocalMPLABXConfigurationGenerator::AddReadICEConfiguration()
+void cmLocalMPLABXConfigurationGenerator::AddRealICEConfiguration()
 {
   auto& config = toolsConfiguration["RealICEPlatformTool"];
 

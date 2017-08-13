@@ -69,7 +69,7 @@ private:
   void AddC32GlobalConfiguration();
 
 public:
-  void AddReadICEConfiguration();
+  void AddRealICEConfiguration();
   void AddSimulatorConfiguration();
 };
 
