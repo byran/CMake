@@ -5,7 +5,7 @@
 
 #include "cmGeneratorTarget.h"
 #include "cmSourceFile.h"
-#include "cmMakeFile.h"
+#include "cmMakefile.h"
 #include "cmGlobalMPLABXGenerator.h"
 #include "cmGeneratedFileStream.h"
 #include "cmSystemTools.h"

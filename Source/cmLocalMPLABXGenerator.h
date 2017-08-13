@@ -13,8 +13,7 @@ public:
   virtual void Generate() CM_OVERRIDE;
 
 protected:
-  std::string cmLocalMPLABXGenerator::ConvertToFullPath(
-    const std::string& localPath);
+  std::string ConvertToFullPath(const std::string& localPath);
 
   std::string IncludePathsForTarget(cmGeneratorTarget* target,
     char const* language) const;
