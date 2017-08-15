@@ -24,7 +24,7 @@ public:
  * Utilized by the generator factory to determine if this generator
  * supports toolsets.
  */
-  static bool SupportsToolset() { return false; }
+  static bool SupportsToolset() { return true; }
 
   /**
    * Utilized by the generator factory to determine if this generator
