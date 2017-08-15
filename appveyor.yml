@@ -1,0 +1,25 @@
+version: "{build}"
+
+os: Visual Studio 2017
+
+clone_folder: c:\projects\CMake
+
+platform: x64
+configuration: Release
+
+before_build:
+  - cd c:\projects\CMake
+  - mkdir build
+  - cd build
+  - echo Running cmake...
+  - cmake -G "Visual Studio 15 2017 Win64" -D CMAKE_PREFIX_PATH="C:/Qt/5.9.1/msvc2017_64" -D CMake_INSTALL_DEPENDENCIES=ON ..
+
+build:
+  project: build\CMake.sln
+
+after_build:
+  - cd c:\projects\CMake\build\
+  - cpack -G ZIP
+
+artifacts:
+  - path: build\cmake-3.8.2-win64-x64.zip
