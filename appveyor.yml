@@ -22,4 +22,4 @@ after_build:
   - cpack -G ZIP
 
 artifacts:
-  - path: build\cmake-3.8.2-win64-x64.zip
+  - path: build\cmake-*-win64-x64.zip
