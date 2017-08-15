@@ -1,3 +1,6 @@
+.. image:: https://ci.appveyor.com/api/projects/status/u66707lu172n8ng0?svg=true
+   :target: https://ci.appveyor.com/project/byran/cmake
+
 CMake
 *****
 
