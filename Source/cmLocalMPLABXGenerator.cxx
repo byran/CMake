@@ -106,6 +106,11 @@ void cmLocalMPLABXGenerator::Generate()
     cmLocalMPLABXConfigurationGenerator configuration;
     configuration.targetType = target->GetType();
 
+    if(configuration.targetType == cmStateEnums::TargetType::INTERFACE_LIBRARY)
+    {
+      continue;
+    }
+
     AddMPLABXToolConfigurationFromDefinitions(target, configuration);
 
     configuration.sourceRoots.push_back(this->GetCurrentSourceDirectory());
@@ -142,6 +147,11 @@ void cmLocalMPLABXGenerator::Generate()
     auto libraries = target->GetLinkImplementationLibraries("")->Libraries;
     for (auto & library : libraries)
     {
+      if(library.Target->GetType() ==
+         cmStateEnums::TargetType::INTERFACE_LIBRARY)
+      {
+        continue;
+      }
       configuration.libraries.push_back({ library.Target->GetName(),
         library.Target->GetDirectory() });
       project.dependencies.push_back(library.Target->GetDirectory() + "/" +
