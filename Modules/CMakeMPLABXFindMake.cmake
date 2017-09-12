@@ -4,7 +4,10 @@ find_program(CMAKE_MAKE_PROGRAM
     make.exe
     make
   PATHS
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.65/gnuBins/GnuWin32/bin"
     "C:/Program Files (x86)/Microchip/MPLABX/v3.26/gnuBins/GnuWin32/bin"
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.15/gnuBins/GnuWin32/bin"
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.10/gnuBins/GnuWin32/bin"
     "/usr/bin"
   NO_DEFAULT_PATH)
 
@@ -15,6 +18,9 @@ find_program(MPLABX_PROJECT_MAKEFILES_GENERATOR
     prjMakefilesGenerator.bat
     prjMakefilesGenerator.sh
   PATHS
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.65/mplab_ide/bin"
     "C:/Program Files (x86)/Microchip/MPLABX/v3.26/mplab_ide/bin"
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.15/mplab_ide/bin"
+    "C:/Program Files (x86)/Microchip/MPLABX/v3.10/mplab_ide/bin"
     "/opt/microchip/mplabx/v3.65/mplab_ide/bin"
   NO_DEFAULT_PATH)
