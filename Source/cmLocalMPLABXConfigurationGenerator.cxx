@@ -176,7 +176,7 @@ void cmLocalMPLABXConfigurationGenerator::WriteLinkerLibrary(
   xml->Attribute("DBC",
     "${MAKE}  -f Makefile CONF=default TYPE_IMAGE=DEBUG_RUN");
   xml->Attribute("CC",
-    "rm -rf &quot;build/default&quot; &quot;dist/default&quot;");
+    "rm -rf \"build/default\" \"dist/default\"");
 
   std::string value = "dist/default/production/";
   value += library.name + ".X.a";
