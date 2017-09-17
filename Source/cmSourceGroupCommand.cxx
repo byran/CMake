@@ -4,6 +4,7 @@
 
 #include <set>
 #include <sstream>
+#include <stddef.h>
 
 #include "cmMakefile.h"
 #include "cmSourceGroup.h"
