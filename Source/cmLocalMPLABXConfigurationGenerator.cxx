@@ -160,7 +160,7 @@ void cmLocalMPLABXConfigurationGenerator::WriteCompileType() const
 void cmLocalMPLABXConfigurationGenerator::WriteLinkerLibrary(
   MLPABXConfiguration::library const& library) const
 {
-  if(library.name.size() == 0)
+  if(!library.targetLibrary)
   {
     XMLElement linkerLibProjectItemElement{xml, "linkerLibFileItem"};
     xml->Content(library.path);

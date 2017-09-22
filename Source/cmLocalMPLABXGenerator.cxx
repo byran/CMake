@@ -149,7 +149,7 @@ void cmLocalMPLABXGenerator::Generate()
     {
       if(library.Target == nullptr)
       {
-        configuration.libraries.push_back({"",
+        configuration.libraries.push_back({false, "",
                                            library});
       }
       else
@@ -159,7 +159,7 @@ void cmLocalMPLABXGenerator::Generate()
         {
           continue;
         }
-        configuration.libraries.push_back({library.Target->GetName(),
+        configuration.libraries.push_back({true, library.Target->GetName(),
                                            library.Target->GetDirectory()});
         project.dependencies.push_back(library.Target->GetDirectory() + "/" +
                                        library.Target->GetName() + ".X");

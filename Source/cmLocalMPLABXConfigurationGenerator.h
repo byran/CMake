@@ -22,6 +22,7 @@ namespace MLPABXConfiguration
 
   struct library
   {
+    bool targetLibrary;
     std::string name;
     std::string path;
   };
