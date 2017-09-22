@@ -147,15 +147,23 @@ void cmLocalMPLABXGenerator::Generate()
     auto libraries = target->GetLinkImplementationLibraries("")->Libraries;
     for (auto & library : libraries)
     {
-      if(library.Target->GetType() ==
-         cmStateEnums::TargetType::INTERFACE_LIBRARY)
+      if(library.Target == nullptr)
       {
-        continue;
+        configuration.libraries.push_back({"",
+                                           library});
       }
-      configuration.libraries.push_back({ library.Target->GetName(),
-        library.Target->GetDirectory() });
-      project.dependencies.push_back(library.Target->GetDirectory() + "/" +
-        library.Target->GetName() + ".X");
+      else
+      {
+        if (library.Target->GetType() ==
+            cmStateEnums::TargetType::INTERFACE_LIBRARY)
+        {
+          continue;
+        }
+        configuration.libraries.push_back({library.Target->GetName(),
+                                           library.Target->GetDirectory()});
+        project.dependencies.push_back(library.Target->GetDirectory() + "/" +
+                                       library.Target->GetName() + ".X");
+      }
     }
 
     configuration.AddSimulatorConfiguration();

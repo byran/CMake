@@ -160,43 +160,51 @@ void cmLocalMPLABXConfigurationGenerator::WriteCompileType() const
 void cmLocalMPLABXConfigurationGenerator::WriteLinkerLibrary(
   MLPABXConfiguration::library const& library) const
 {
-  XMLElement linkerLibProjectItemElement{ xml, "linkerLibProjectItem" };
+  if(library.name.size() == 0)
+  {
+    XMLElement linkerLibProjectItemElement{xml, "linkerLibFileItem"};
+    xml->Content(library.path);
+  }
+  else
+  {
+    XMLElement linkerLibProjectItemElement{xml, "linkerLibProjectItem"};
 
-  XMLElement makeArtifactElement{ xml, "makeArtifact" };
+    XMLElement makeArtifactElement{xml, "makeArtifact"};
 
-  std::string libraryPath = library.path + "/" + library.name + ".X";
+    std::string libraryPath = library.path + "/" + library.name + ".X";
 
-  xml->Attribute("PL", libraryPath.c_str());
-  xml->Attribute("CT", "3");
-  xml->Attribute("CN", "default");
-  xml->Attribute("AC", "true");
-  xml->Attribute("BL", "true");
-  xml->Attribute("WD", libraryPath.c_str());
-  xml->Attribute("BC", "${MAKE}  -f Makefile CONF=default");
-  xml->Attribute("DBC",
-    "${MAKE}  -f Makefile CONF=default TYPE_IMAGE=DEBUG_RUN");
-  xml->Attribute("CC",
-    "rm -rf \"build/default\" \"dist/default\"");
+    xml->Attribute("PL", libraryPath.c_str());
+    xml->Attribute("CT", "3");
+    xml->Attribute("CN", "default");
+    xml->Attribute("AC", "true");
+    xml->Attribute("BL", "true");
+    xml->Attribute("WD", libraryPath.c_str());
+    xml->Attribute("BC", "${MAKE}  -f Makefile CONF=default");
+    xml->Attribute("DBC",
+                   "${MAKE}  -f Makefile CONF=default TYPE_IMAGE=DEBUG_RUN");
+    xml->Attribute("CC",
+                   "rm -rf \"build/default\" \"dist/default\"");
 
-  std::string value = "dist/default/production/";
-  value += library.name + ".X.a";
-  xml->Attribute("OP", value.c_str());
+    std::string value = "dist/default/production/";
+    value += library.name + ".X.a";
+    xml->Attribute("OP", value.c_str());
 
-  value = "dist/default/debug/";
-  value += library.name + ".X.a";
-  xml->Attribute("DOP", value.c_str());
+    value = "dist/default/debug/";
+    value += library.name + ".X.a";
+    xml->Attribute("DOP", value.c_str());
 
-  value = "dist/default/production/";
-  value += library.name + ".X.a";
-  xml->Attribute("FL", value.c_str());
+    value = "dist/default/production/";
+    value += library.name + ".X.a";
+    xml->Attribute("FL", value.c_str());
 
-  value = "dist/default/production/";
-  value += library.name + ".X.";
-  xml->Attribute("PD", value.c_str());
+    value = "dist/default/production/";
+    value += library.name + ".X.";
+    xml->Attribute("PD", value.c_str());
 
-  value = "dist/default/debug/";
-  value += library.name + ".X.";
-  xml->Attribute("DD", value.c_str());
+    value = "dist/default/debug/";
+    value += library.name + ".X.";
+    xml->Attribute("DD", value.c_str());
+  }
 }
 
 void cmLocalMPLABXConfigurationGenerator::WriteMakeCustomizationType() const
