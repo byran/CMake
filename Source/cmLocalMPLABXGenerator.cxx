@@ -96,6 +96,7 @@ extern const std::string makefileContents;
 void cmLocalMPLABXGenerator::Generate()
 {
   std::vector<cmGeneratorTarget*> targets = this->GetGeneratorTargets();
+  std::string config = this->Makefile->GetSafeDefinition("CMAKE_BUILD_TYPE");
   auto projectTool =
     this->Makefile->GetDefinition("MPLABX_PROJECT_MAKEFILES_GENERATOR");
   auto fullProject = this->Makefile->GetDefinition("MPLABX_FULL_PROJECT");
@@ -128,7 +129,7 @@ void cmLocalMPLABXGenerator::Generate()
       PreprocessorMacrosForTarget(target, "C");
 
     std::vector<cmSourceFile const*> files;
-    target->GetObjectSources(files, "");
+    target->GetObjectSources(files, config);
     for(auto file : files)
     {
       configuration.rootFolder.subFolders["SourceFiles"].
@@ -144,7 +145,7 @@ void cmLocalMPLABXGenerator::Generate()
         files.push_back(file->GetFullPath());
     }
 
-    auto libraries = target->GetLinkImplementationLibraries("")->Libraries;
+    auto libraries = target->GetLinkImplementationLibraries(config)->Libraries;
     for (auto & library : libraries)
     {
       if(library.Target == nullptr)
