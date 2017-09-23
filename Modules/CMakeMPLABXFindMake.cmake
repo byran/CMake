@@ -24,3 +24,8 @@ find_program(MPLABX_PROJECT_MAKEFILES_GENERATOR
     "C:/Program Files (x86)/Microchip/MPLABX/v3.10/mplab_ide/bin"
     "/opt/microchip/mplabx/v3.65/mplab_ide/bin"
   NO_DEFAULT_PATH)
+
+find_path(MPLAB_HARMONY_PATH framework
+        PATHS
+        "~/microchip/harmony/v2_04"
+        NO_DEFAULT_PATH)
