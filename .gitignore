@@ -5,3 +5,6 @@
 
 *.pyc
 Testing
+
+/cmake-build-debug
+/.idea
