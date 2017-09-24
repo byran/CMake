@@ -3,6 +3,14 @@
 #include "cmXMLWriter.h"
 #include "cmMPLABXXMLElement.h"
 
+
+bool MLPABXConfiguration::library::operator==(library const& other) const
+{
+  return (targetLibrary == other.targetLibrary) &&
+         (name == other.name) &&
+         (path == other.path);
+}
+
 cmLocalMPLABXConfigurationGenerator::cmLocalMPLABXConfigurationGenerator()
 {
   rootFolder.displayName = "root";

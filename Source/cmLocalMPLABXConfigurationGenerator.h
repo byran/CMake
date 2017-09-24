@@ -25,6 +25,7 @@ namespace MLPABXConfiguration
     bool targetLibrary;
     std::string name;
     std::string path;
+      bool operator==(library const& other) const;
   };
 }
 

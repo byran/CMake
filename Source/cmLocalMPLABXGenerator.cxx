@@ -10,6 +10,9 @@
 #include "cmGeneratedFileStream.h"
 #include "cmSystemTools.h"
 
+#include <vector>
+#include <algorithm>
+
 cmLocalMPLABXGenerator::cmLocalMPLABXGenerator(cmGlobalGenerator* gg,
   cmMakefile* makefile)
   :cmLocalGenerator(gg, makefile)
@@ -91,6 +94,98 @@ namespace
   }
 }
 
+namespace
+{
+    template<typename T>
+    void AddToVectorIfNotPresent(std::vector<T>& v, T e)
+    {
+      if(std::find(v.begin(), v.end(), e) == v.end())
+      {
+        v.push_back(e);
+      }
+    }
+
+    template<typename T>
+    std::vector<T> WithoutDuplicatesLeavingLast(std::vector<T> const &v)
+    {
+      std::vector<T> unique;
+      for(auto it = v.rbegin(); it != v.rend(); ++it)
+      {
+        AddToVectorIfNotPresent(unique, *it);
+      }
+      return {unique.rbegin(), unique.rend()};
+    }
+
+    template<typename T>
+    void AddLibrary(T& library,
+                    cmLocalMPLABXProjectGenerator &project,
+                    cmLocalMPLABXConfigurationGenerator &configuration)
+    {
+      if (library.Target == nullptr)
+      {
+        configuration.libraries.push_back({false, "", library});
+
+      }
+      else
+      {
+
+        if (library.Target->GetType() !=
+            cmStateEnums::TargetType::INTERFACE_LIBRARY)
+        {
+          configuration.libraries.push_back({true, library.Target->GetName(),
+                                             library.Target->GetDirectory()});
+          project.dependencies.push_back(library.Target->GetDirectory() + "/" +
+                                         library.Target->GetName() + ".X");
+        }
+      }
+    }
+
+    template<typename T>
+    void AddLinkInterfaceLibraries(cmGeneratorTarget *headTarget,
+                           std::string const &config,
+                           T& linkLibrary,
+                           cmLocalMPLABXProjectGenerator &project,
+                           cmLocalMPLABXConfigurationGenerator &configuration)
+    {
+      std::vector<cmLinkItem> linkInterfaceLibraries = linkLibrary.Target->
+          GetLinkInterfaceLibraries(config, headTarget, true)->Libraries;
+
+      for (auto interfaceLibrary : linkInterfaceLibraries)
+      {
+        AddLibrary(interfaceLibrary, project, configuration);
+
+        if (interfaceLibrary.Target != nullptr)
+        {
+          AddLinkInterfaceLibraries(headTarget, config, interfaceLibrary,
+                                    project, configuration);
+        }
+      }
+    }
+
+    void AddLinkLibraies(cmGeneratorTarget *target, std::string const &config,
+                         cmLocalMPLABXProjectGenerator &project,
+                         cmLocalMPLABXConfigurationGenerator &configuration)
+    {
+      std::vector<cmLinkImplItem> libraries = target->
+          GetLinkImplementationLibraries(config)->Libraries;
+
+      for (auto &library : libraries)
+      {
+        AddLibrary(library, project, configuration);
+
+        if (library.Target != nullptr)
+          AddLinkInterfaceLibraries(target, config, library, project,
+                                    configuration);
+      }
+
+      // Remove any duplicates that may have been added during the
+      // creation of the dependencies
+      project.dependencies = WithoutDuplicatesLeavingLast(
+          project.dependencies);
+      configuration.libraries = WithoutDuplicatesLeavingLast(
+          configuration.libraries);
+    }
+}
 extern const std::string makefileContents;
 
 void cmLocalMPLABXGenerator::Generate()
@@ -145,27 +240,7 @@ void cmLocalMPLABXGenerator::Generate()
         files.push_back(file->GetFullPath());
     }
 
-    auto libraries = target->GetLinkImplementationLibraries(config)->Libraries;
-    for (auto & library : libraries)
-    {
-      if(library.Target == nullptr)
-      {
-        configuration.libraries.push_back({false, "",
-                                           library});
-      }
-      else
-      {
-        if (library.Target->GetType() ==
-            cmStateEnums::TargetType::INTERFACE_LIBRARY)
-        {
-          continue;
-        }
-        configuration.libraries.push_back({true, library.Target->GetName(),
-                                           library.Target->GetDirectory()});
-        project.dependencies.push_back(library.Target->GetDirectory() + "/" +
-                                       library.Target->GetName() + ".X");
-      }
-    }
+    AddLinkLibraies(target, config, project, configuration);
 
     configuration.AddSimulatorConfiguration();
 
