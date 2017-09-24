@@ -194,6 +194,10 @@ void cmLocalMPLABXGenerator::Generate()
 
     if(fullProject && projectTool)
     {
+      std::string message = "Creating makefiles for " + target->GetName() +
+              " MPLABX project";
+      this->GetCMakeInstance()->UpdateProgress(message.c_str(), -1);
+
       std::string command = std::string("\"") + projectTool + "\" \"" +
         this->ConvertToFullPath(target->GetName() + ".X") + "\"";
 
