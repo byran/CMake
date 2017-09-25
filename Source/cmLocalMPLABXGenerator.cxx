@@ -240,7 +240,11 @@ void cmLocalMPLABXGenerator::Generate()
         files.push_back(file->GetFullPath());
     }
 
-    AddLinkLibraies(target, config, project, configuration);
+    if(target->GetType() !=
+            cmStateEnums::TargetType::STATIC_LIBRARY)
+    {
+      AddLinkLibraies(target, config, project, configuration);
+    }
 
     configuration.AddSimulatorConfiguration();
 
