@@ -4,9 +4,13 @@
 #include "cmGlobalCommonGenerator.h"
 #include "cmGlobalGeneratorFactory.h"
 
+#include <string>
+
 class cmGlobalMPLABXGenerator : public cmGlobalCommonGenerator
 {
 public:
+  std::string languageToolchainVersion{"1.40"};
+
   cmGlobalMPLABXGenerator(cmake* cm);
 
   static cmGlobalGeneratorFactory* NewFactory()

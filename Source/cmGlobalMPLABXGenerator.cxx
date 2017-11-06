@@ -59,6 +59,8 @@ namespace
 bool cmGlobalMPLABXGenerator::SetGeneratorToolset(std::string const& ts,
   cmMakefile* mf)
 {
+  languageToolchainVersion = ts;
+
   mf->AddCacheDefinition("XC32_VERSION", ts.c_str(), "XC32 Version",
     cmStateEnums::STRING);
 

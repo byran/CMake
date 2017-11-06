@@ -201,6 +201,9 @@ void cmLocalMPLABXGenerator::Generate()
     cmLocalMPLABXProjectGenerator project;
     cmLocalMPLABXConfigurationGenerator configuration;
     configuration.targetType = target->GetType();
+    configuration.languageToolchainVersion =
+        static_cast<cmGlobalMPLABXGenerator*>(GlobalGenerator)->
+            languageToolchainVersion;
 
     if(configuration.targetType == cmStateEnums::TargetType::INTERFACE_LIBRARY)
     {
