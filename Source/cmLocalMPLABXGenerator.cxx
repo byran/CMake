@@ -209,6 +209,11 @@ void cmLocalMPLABXGenerator::Generate()
 
     AddMPLABXToolConfigurationFromDefinitions(target, configuration);
 
+    if(this->Makefile->IsDefinitionSet("MPLABX_PIC"))
+    {
+      configuration.targetDevice = this->Makefile->GetDefinition("MPLABX_PIC");
+    }
+
     configuration.sourceRoots.push_back(this->GetCurrentSourceDirectory());
 
     project.name = target->GetName();
