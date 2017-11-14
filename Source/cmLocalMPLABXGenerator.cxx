@@ -231,18 +231,28 @@ void cmLocalMPLABXGenerator::Generate()
     configuration.toolsConfiguration["C32"]["preprocessor-macros"] =
       PreprocessorMacrosForTarget(target, "C");
 
-    std::vector<cmSourceFile const*> files;
-    target->GetObjectSources(files, config);
-    for(auto file : files)
+    std::vector<cmSourceFile const*> sourceFiles;
+    target->GetObjectSources(sourceFiles, config);
+    for(auto file : sourceFiles)
     {
       configuration.rootFolder.subFolders["SourceFiles"].
         files.push_back(file->GetFullPath());
     }
 
-    files.clear();
+    std::vector<cmSourceFile const*> extraSources;
+    target->GetExtraSources(extraSources, config);
+    for(auto file : extraSources)
+    {
+      if(cmSystemTools::LowerCase(file->GetExtension()) == "ld")
+      {
+        configuration.rootFolder.subFolders["LinkerScript"].
+            files.push_back(file->GetFullPath());
+      }
+    }
 
-    target->GetHeaderSources(files, "");
-    for (auto file : files)
+    std::vector<cmSourceFile const*> headerFiles;
+    target->GetHeaderSources(headerFiles, "");
+    for (auto file : headerFiles)
     {
       configuration.rootFolder.subFolders["HeaderFiles"].
         files.push_back(file->GetFullPath());
