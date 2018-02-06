@@ -37,6 +37,12 @@ std::string cmLocalMPLABXGenerator::IncludePathsForTarget(
   {
     includePaths += path + ";";
   }
+
+  if(includePaths.length() > 0)
+  {
+    // Remove additional semicolon
+    includePaths.erase(includePaths.size() - 1, 1);
+  }
   return includePaths;
 }
 
@@ -49,6 +55,11 @@ std::string cmLocalMPLABXGenerator::PreprocessorMacrosForTarget(
   for(auto& define : defines)
   {
     macros += define + ";";
+  }
+  if(macros.length() > 0)
+  {
+    // Remove additional semicolon
+    macros.erase(macros.size() - 1, 1);
   }
   return macros;
 }
@@ -185,6 +196,18 @@ namespace
       configuration.libraries = WithoutDuplicatesLeavingLast(
           configuration.libraries);
     }
+
+    void AddParameterListToParmaeterList(std::string& current,
+                                         std::string const & additional)
+    {
+        if(additional.length() > 0)
+        {
+            if (current.length() > 0)
+                current += ";";
+
+            current += additional;
+        }
+    }
 }
 extern const std::string makefileContents;
 
@@ -221,15 +244,21 @@ void cmLocalMPLABXGenerator::Generate()
 
     project.name = target->GetName();
 
-    configuration.toolsConfiguration["C32CPP"]["extra-include-directories"] =
-      IncludePathsForTarget(target, "CXX");
-    configuration.toolsConfiguration["C32"]["extra-include-directories"] =
-      IncludePathsForTarget(target, "C");;
+    AddParameterListToParmaeterList(
+      configuration.toolsConfiguration["C32CPP"]["extra-include-directories"],
+      IncludePathsForTarget(target, "CXX"));
 
-    configuration.toolsConfiguration["C32CPP"]["preprocessor-macros"] =
-      PreprocessorMacrosForTarget(target, "CXX");
-    configuration.toolsConfiguration["C32"]["preprocessor-macros"] =
-      PreprocessorMacrosForTarget(target, "C");
+    AddParameterListToParmaeterList(
+      configuration.toolsConfiguration["C32"]["extra-include-directories"],
+      IncludePathsForTarget(target, "C"));
+
+    AddParameterListToParmaeterList(
+      configuration.toolsConfiguration["C32CPP"]["preprocessor-macros"],
+      PreprocessorMacrosForTarget(target, "CXX"));
+
+    AddParameterListToParmaeterList(
+      configuration.toolsConfiguration["C32"]["preprocessor-macros"],
+      PreprocessorMacrosForTarget(target, "C"));
 
     std::vector<cmSourceFile const*> sourceFiles;
     target->GetObjectSources(sourceFiles, config);
